@@ -8,7 +8,7 @@
           type="text"
           id="title"
           class="form-input"
-          v-model="tittle"
+          v-model="title"
           placeholder="Enter todo title"
           required
         />
@@ -44,8 +44,8 @@ import { useTodoStore } from "../stores/todo";
 
 const todoStore = useTodoStore();
 
-const title = ref("");
-const description = ref("");
+const title = ref<string>("");
+const description = ref<string>("");
 const dueDate = ref();
 
 const addTodo = () => {

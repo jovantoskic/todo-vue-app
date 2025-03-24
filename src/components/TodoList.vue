@@ -25,6 +25,7 @@
 import { ref, computed } from "vue";
 import TodoItem from "./TodoItem.vue";
 import { useTodoStore } from "../stores/todo";
+import type { Todo } from "../types/todo";
 
 const todoStore = useTodoStore();
 const filter = ref("all");
@@ -34,12 +35,14 @@ const filterTodos = (filterType: string) => {
 };
 
 const filteredTodos = computed(() => {
-  if (filter.value === "active") {
-    return todoStore.todos.filter((todo) => !todo.completed);
-  } else if (filter.value === "completed") {
-    return todoStore.todos.filter((todo) => todo.completed);
-  }
-  return todoStore.todos;
+  const filterMap = {
+    active: (todo: Todo) => !todo.completed,
+    completed: (todo: Todo) => todo.completed,
+    all: () => true,
+  };
+  const filterFn = filterMap[filter.value as keyof typeof filterMap] || filterMap.all;
+
+  return todoStore.todos.filter(filterFn);
 });
 </script>
 
